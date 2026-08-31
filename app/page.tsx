@@ -1,11 +1,19 @@
-export default function Home() {
+import { prisma } from "@/lib/prisma";
+import ContactsTable from "@/components/ContactsTable";
+
+export const dynamic = "force-dynamic";
+
+export default async function Home() {
+  const contacts = await prisma.contact.findMany({
+    orderBy: { createdAt: "desc" },
+  });
+
   return (
-    <main style={{ fontFamily: "sans-serif", padding: "2rem" }}>
-      <h1>Next.js + Postgres</h1>
-      <p>
-        Infrastructure is up. Check <code>/api/health</code> to verify the
-        database connection.
-      </p>
-    </main>
+    <div className="page">
+      <h1 className="page-title">Contacts Directory</h1>
+      <div className="hud-panel">
+        <ContactsTable contacts={contacts} />
+      </div>
+    </div>
   );
 }

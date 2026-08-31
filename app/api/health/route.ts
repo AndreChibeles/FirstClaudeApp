@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
-import { pool } from "@/lib/db";
+import { prisma } from "@/lib/prisma";
 
 export async function GET() {
   try {
-    const result = await pool.query("SELECT NOW() as now");
+    const result = await prisma.$queryRaw<{ now: Date }[]>`SELECT NOW() as now`;
     return NextResponse.json({
       status: "ok",
-      db_time: result.rows[0].now,
+      db_time: result[0].now,
     });
   } catch (error) {
     return NextResponse.json(

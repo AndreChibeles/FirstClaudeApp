@@ -5,6 +5,7 @@ services:
       target: dev
     image: nextjswebsite-web
     restart: unless-stopped
+    command: sh -c "npx prisma migrate deploy && npm run dev"
     ports:
       - "${WEB_PORT:-3000}:3000"
     environment:
